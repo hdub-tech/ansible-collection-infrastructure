@@ -17,7 +17,8 @@
 
 2. Install Python3:
 
-   a.  **PREFERRED** - Install and set-up [pyenv] so as not to taint your system python
+   a. **PREFERRED**: Install and set-up [pyenv] to not taint your system python:
+
    ```bash
    curl https://pyenv.run | bash
 
@@ -70,15 +71,20 @@
 
 6. Prep your system for ssh use.
 
-    a. Copy template ssh config from password manager to your host. (_TODO Flesh out details_)
+    a. Copy template ssh config from password manager to your host.
+    (_TODO Flesh out details_)
 
-    b. Make sure your ssh keys are added to the agent with their passphrase (You can do the following only before use, or add it to you `~/.bashrc` file):
+    b. Make sure your ssh keys are added to the agent with their passphrase (You
+    can do the following only before use, or add it to you `~/.bashrc` file):
 
     ```bash
     ssh-add ~/.ssh/$USER_$DESC_infra
     ```
 
-7. Change to the `ansible` repository subdirectory and ensure `ansible-navigator` works against your localhost (_The following commands will only gather information about the setup of your system - no changes will be made_).
+7. Change to the `ansible` repository subdirectory and ensure
+   `ansible-navigator` works against your localhost (_The following commands
+   will only gather information about the setup of your system - no changes will
+   be made_).
 
    ```bash
    cd ansible
@@ -99,7 +105,8 @@
     source .venv/bin/activate
     ```
 
-2. If you didn't add the `ssh-add` statements to your shell config file, add your ssh keys to the agent:
+2. If you didn't add the `ssh-add` statements to your shell config file, add
+   your ssh keys to the agent:
 
     ```bash
     ssh-add ~/.ssh/$USER_$DESC_infra
@@ -108,3 +115,7 @@
 <!-- Links -->
 [pyenv]: https://github.com/pyenv/pyenv
 [venv]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
+
+<!-- markdownlint-configure-file {
+  MD029: false
+} -->
