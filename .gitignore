@@ -1,5 +1,8 @@
 # Virtual envs
 .venv
 
+# Ansible Lint galaxy output
+.ansible
+
 # Ansible galaxy roles/collections
 roles/geerlingguy.swap
