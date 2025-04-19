@@ -1,0 +1,20 @@
+---
+driver:
+  # Prefer not to setup host access for swap in a container, hence a VM
+  name: vagrant
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      linux:
+        swap_file_path: /swapfile
+        swap_file_size_mb: "2048"  # Needs quotes!!
+        swap_swappiness: 60  # default
+  playbooks:
+    converge: ../../playbooks/configure-swap.yml
+platforms:
+  - name: ubuntu-2204-vagrant
+    box: bento/ubuntu-22.04
+    memory: 2048
+    groups:
+      - linux

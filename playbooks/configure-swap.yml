@@ -1,0 +1,7 @@
+- name: Configure swap on host
+  hosts: linux
+  become: true
+  gather_facts: true
+  tags: [swap]
+  roles:
+    - geerlingguy.swap
