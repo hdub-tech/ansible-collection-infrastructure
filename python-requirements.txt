@@ -1,0 +1,5 @@
+ansible-navigator
+# Version downgrade due to https://github.com/ansible-community/molecule-plugins/issues/301
+molecule==25.1.0
+molecule-plugins[podman]==23.7.0
+molecule-plugins[vagrant]==23.7.0

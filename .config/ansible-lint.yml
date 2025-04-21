@@ -1,0 +1,6 @@
+exclude_paths:
+  - .github/workflows
+  - collections/ansible_collections
+  - molecule/resources/playbooks/prepare_default.yml
+  - molecule/configure_swap/prepare.yml
+  - roles/geerlingguy.swap

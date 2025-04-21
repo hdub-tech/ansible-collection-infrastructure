@@ -1,0 +1,9 @@
+# Virtual envs
+.venv
+
+# Ansible Lint galaxy and navigator output
+.ansible
+
+# Ansible galaxy roles/collections
+collections/ansible_collections/ansible*
+roles/geerlingguy.swap

@@ -1,0 +1,11 @@
+---
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_CONFIG: ../../ansible.cfg  # Relative to molecule playbook?
+    ANSIBLE_ROLES_PATH: ../../roles  # Relative to molecule playbook?
+    ANSIBLE_COLLECTIONS_PATH: ../../collections  # Relative to molecule playbook?
+  inventory:
+    group_vars:
+      linux:
+        ansible_python_interpreter: /usr/bin/python3

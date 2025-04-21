@@ -1,0 +1,20 @@
+---
+- name: Verify configure_swap.yml playbook
+  hosts: linux
+  gather_facts: true
+  tasks:
+    - name: Assert 0 < swaptotal_mb|memory_mb.swap <= swap_file_size_mb
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.swaptotal_mb > 0
+          - ansible_facts.swaptotal_mb <= (swap_file_size_mb | int)
+          - ansible_facts.memory_mb.swap.total > 0
+          - ansible_facts.memory_mb.swap.total <= (swap_file_size_mb | int)
+
+    - name: Assert swapfile exists and is correct size
+      ansible.builtin.stat:
+        path: "{{ swap_file_path }}"
+      register: swapfile_stat
+      failed_when:
+        - not swapfile_stat.stat.exists
+        - swapfile_stat.stat.size != ( (swap_file_size_mb | int) * 1024 * 1024 )

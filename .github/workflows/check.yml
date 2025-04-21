@@ -1,0 +1,84 @@
+name: CI for ansible-collection-infrastructure
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on pull request events but only for the "main" branch
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  ANSIBLE_FORCE_COLOR: '1'
+  ANSIBLE_VERBOSITY: 1
+  PY_COLORS: '1'
+  VAGRANT_VERSION: 2.4.3-1
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  lint:
+    # The type of runner that the job will run on
+    # This image already has Python and various container utils
+    # https://github.com/actions/runner-images/blob/ubuntu22/20240603.1/images/ubuntu/Ubuntu2404-Readme.md
+    runs-on: ubuntu-24.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checks-out repository under $GITHUB_WORKSPACE
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+
+      - name: Install Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
+        with:
+          python-version-file: .python-version
+
+      - name: Lint markdown files
+        uses: DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265  # 19.1.0
+
+      - name: Install project dependencies
+        run: |
+          cd "$GITHUB_WORKSPACE" || exit 1
+          pip install -r python-requirements.txt
+          ansible-galaxy install -r ansible-requirements.yml
+
+      - name: Lint ansible files
+        run: |
+          cd "$GITHUB_WORKSPACE" || exit 1
+          ansible-lint
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-24.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checks-out repository under $GITHUB_WORKSPACE
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+
+      - name: Install Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
+        with:
+          python-version-file: .python-version
+
+      - name: Install project dependencies
+        run: |
+          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+          # shellcheck disable=SC2086
+          sudo apt update && sudo apt install virtualbox vagrant=$VAGRANT_VERSION parallel
+          cd "$GITHUB_WORKSPACE" || exit 1
+          pip install -r python-requirements.txt
+          ansible-galaxy install -r ansible-requirements.yml
+
+      - name: Add the vagrant boxes to prevent race conditions during parallel molecule tests
+        run: |
+          echo "Sockets: $( parallel --number-of-sockets )"
+          echo "Cores: $( parallel --number-of-cores )"
+          echo "Threads: $( parallel --number-of-threads )"
+          parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04
+
+      - name: Run molecule playbook tests in parallel
+        run: |
+          # parallel exit code = number of tests not executed... expecting 1
+          # shellcheck disable=SC1083
+          parallel --filter='"{/}" ne "resources"' molecule test -s {/} ::: molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")

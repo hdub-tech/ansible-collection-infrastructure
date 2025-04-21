@@ -1,0 +1,9 @@
+- name: Execute the driver specific playbook
+  import_playbook: ../resources/playbooks/prepare_default.yml
+
+# TODO: Figure out how to do with extra vagrant flags and ditch this playbook
+- name: Disable swap in VM for clean test
+  import_playbook: ../../playbooks/configure_swap.yml
+  vars:
+    swap_file_state: absent
+    swap_file_path: /swap.img
