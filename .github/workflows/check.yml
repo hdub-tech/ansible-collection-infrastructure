@@ -31,7 +31,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
         with:
-          python-version: '3.13'
+          python-version-file: .python-version
 
       - name: Lint markdown files
         uses: DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265  # 19.1.0
@@ -58,7 +58,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
         with:
-          python-version: '3.13'
+          python-version-file: .python-version
 
       - name: Install project dependencies
         run: |
