@@ -3,9 +3,27 @@
 A collection of things I commonly use with infrastructure.
 
 > [!WARNING]
-> MASSIVE WIP! First collection, just playing around.
+> MASSIVE WIP! First collection, just playing around. This is not published to Galaxy.
 
-## Usage
+## Table of Contents
+
+- [What's in the box](#whats-in-the-box)
+  - [Playbooks](#playbooks)
+- [Getting Started](#getting-started)
+
+## What's in the box
+
+> [!NOTE]
+> Again, reminder that I'm just collecting things I use in a generic fashion so
+> that I can use them again in the future. I know it looks strange other wise.
+
+### Playbooks
+
+| Playbook | Description | Variables |
+| --- | --- | --- |
+| [hdub_tech.infrastructure.configure_swap.yml] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
+
+## Getting Started
 
 1. Add this collection to your project by adding it to YOUR project's `ansible-requirements.yml`:
 
@@ -53,4 +71,7 @@ A collection of things I commonly use with infrastructure.
       ```
 
 <!-- Links -->
-[ansible#76030]: https://github.com/ansible/ansible/issues/76030#issuecomment-942520399
+[hdub_tech.infrastructure.configure_swap.yml]: playbooks/configure_swap.yml
+[ansible#76030]:         https://github.com/ansible/ansible/issues/76030#issuecomment-942520399
+[geerlingguy.swap role]: https://github.com/geerlingguy/ansible-role-swap
+[geerlingguy.swap#role-variables]: https://github.com/geerlingguy/ansible-role-swap/tree/master?tab=readme-ov-file#role-variables
