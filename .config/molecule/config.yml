@@ -2,7 +2,8 @@
 provisioner:
   name: ansible
   env:
-    ANSIBLE_CONFIG: ../../ansible.cfg  # Relative to molecule test dir
+    ANSIBLE_CONFIG: ../../ansible.cfg  # Relative to molecule playbook?
+    ANSIBLE_ROLES_PATH: ../../roles  # Relative to molecule playbook?
   inventory:
     group_vars:
       linux:
