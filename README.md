@@ -1,7 +1,9 @@
 # Ansible Collection - hdub_tech.infrastructure
 
+A collection of things I commonly use with infrastructure.
+
 > [!WARNING]
-> MASSIVE WIP! First collection, just playing around
+> MASSIVE WIP! First collection, just playing around.
 
 ## Usage
 
@@ -11,7 +13,7 @@
    collections:
      - name: git@github.com:hdub-tech/ansible-collection-infrastructure.git
        type: git
-       version: main  # Actually versioning coming soon!
+       version: main  # Proper versioning coming soon!
     ```
 
 2. Install the `hdub_tech.infrastructure` collection:
@@ -41,7 +43,7 @@
    a. To execute directly:
 
       ```bash
-      ansible-playbook hdub_tech.infrastructure.configure-swap.yml
+      ansible-playbook hdub_tech.infrastructure.configure_swap.yml
       ```
 
    b. To use in another playbook:

@@ -1,5 +1,5 @@
 ---
-- name: Verify configure-swap.yml playbook
+- name: Verify configure_swap.yml playbook
   hosts: linux
   gather_facts: true
   tasks:

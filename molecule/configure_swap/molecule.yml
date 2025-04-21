@@ -11,7 +11,7 @@ provisioner:
         swap_file_size_mb: "2048"  # Needs quotes!!
         swap_swappiness: 60  # default
   playbooks:
-    converge: ../../playbooks/configure-swap.yml
+    converge: ../../playbooks/configure_swap.yml
 platforms:
   - name: ubuntu-2204-vagrant
     box: bento/ubuntu-22.04

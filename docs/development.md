@@ -5,15 +5,24 @@
 
 ## First time SET-UP
 
-1. Install system dependencies:
+1. Install dependencies:
 
-   ```bash
-   sudo apt-get install git podman
-   ```
+   a. For running playbooks, etc:
+
+      ```bash
+      sudo apt-get install git podman
+      ```
+
+   b. For running tests, install the [vagrant] repo by following the
+      instructions on their site and then install:
+
+      ```bash
+      sudo apt-get install vagrant virtualbox
+      ```
 
 > [!NOTE]
 > You can use `docker` instead, just note that further documentation may
-> exclusively reference `podman` and ansible-navigator may not work.
+> exclusively reference `podman` and `ansible-navigator` may not work.
 
 2. Install Python3:
 
@@ -69,7 +78,7 @@
    molecule test --all
    ```
 
-6. Prep your system for ssh use.
+7. AS NEEDED: Prep your system for ssh use.
 
     a. Copy template ssh config from password manager to your host.
     (_TODO Flesh out details_)
@@ -81,14 +90,11 @@
     ssh-add ~/.ssh/$USER_$DESC_infra
     ```
 
-7. Change to the `ansible` repository subdirectory and ensure
-   `ansible-navigator` works against your localhost (_The following commands
-   will only gather information about the setup of your system - no changes will
-   be made_).
+8. Ensure `ansible-navigator` works against your localhost (_The following
+   commands will only gather information about the setup of your system - no
+   changes will be made_).
 
    ```bash
-   cd ansible
-
    # exec subcommand is used to execute one-off commands
    ansible-navigator exec "ansible localhost -m setup"
 
@@ -113,8 +119,9 @@
     ```
 
 <!-- Links -->
-[pyenv]: https://github.com/pyenv/pyenv
-[venv]: https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
+[pyenv]:   https://github.com/pyenv/pyenv
+[vagrant]: https://developer.hashicorp.com/vagrant/install
+[venv]:    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
 
 <!-- markdownlint-configure-file {
   MD029: false

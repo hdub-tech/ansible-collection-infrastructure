@@ -1,7 +1,7 @@
 # Virtual envs
 .venv
 
-# Ansible Lint galaxy output
+# Ansible Lint galaxy and navigator output
 .ansible
 
 # Ansible galaxy roles/collections

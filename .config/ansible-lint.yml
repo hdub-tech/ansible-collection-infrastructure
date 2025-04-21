@@ -1,4 +1,5 @@
 exclude_paths:
+  - .github/workflows
   - roles/geerlingguy.swap
-  - molecule/resources/playbooks/prepare-default.yml
-  - molecule/configure-swap/prepare.yml
+  - molecule/resources/playbooks/prepare_default.yml
+  - molecule/configure_swap/prepare.yml
