@@ -2,6 +2,8 @@
 # the driver specific prepare playbook first, which sets up Python on the host.
 # To use, add this to the top of your prepare.yml:
 # - import_playbook: "../resources/playbooks/prepare_default.yml"
-# TODO: Make it non dependent on VIRTUAL_ENV
 - name: Execute the driver specific prepare.yml
-  import_playbook: "{{ lookup('ansible.builtin.env', 'VIRTUAL_ENV') }}/lib/python{{ lookup('ansible.builtin.file', lookup('ansible.builtin.env', 'MOLECULE_PROJECT_DIRECTORY') + '/.python-version') | regex_search('^[0-9]+.[0-9]+') }}/site-packages/molecule_plugins/{{ lookup('ansible.builtin.env', 'MOLECULE_DRIVER_NAME') }}/playbooks/prepare.yml"
+  import_playbook: "{{ MOLECULE_PLUGINS_PATH }}/molecule_plugins/{{ MOLECULE_DRIVER_NAME }}/playbooks/prepare.yml"
+  vars:
+    MOLECULE_PLUGINS_PATH: "{{ lookup('ansible.builtin.pipe', 'pip show molecule-plugins') | regex_search('(Location: )(.*)', '\\2') | first }}"
+    MOLECULE_DRIVER_NAME: "{{ lookup('ansible.builtin.env', 'MOLECULE_DRIVER_NAME') }}"
