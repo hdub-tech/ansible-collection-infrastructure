@@ -1,0 +1,15 @@
+---
+# tasks file for apache2_configure.settings_loop
+- name: Loop over all setting changes for this file
+  when: apache2_configure_file_item | length>0
+  ansible.builtin.lineinfile:
+    path: "{{ apache2_configure_server_root }}/{{ apache2_configure_file_item.key }}"
+    regexp: "{{ setting_item.from }}"
+    line: "{{ setting_item.to }}"
+    backrefs: "{{ setting_item.backrefs | default(false) }}"
+    backup: "{{ apache2_configure_backup }}"
+  loop: "{{ apache2_configure_file_item.value }}"
+  loop_control:
+    loop_var: setting_item
+  notify:
+    - Restart apache2 service

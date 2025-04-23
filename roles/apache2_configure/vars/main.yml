@@ -1,0 +1,7 @@
+---
+# vars file for apache2_configure
+# ============================== START DEFAULTS ============================== #
+__apache2_configure_server_root:  /etc/apache2
+__apache2_configure_backup:       true
+__apache2_configure_service_name: apache2
+# =============================== END DEFAULTS =============================== #

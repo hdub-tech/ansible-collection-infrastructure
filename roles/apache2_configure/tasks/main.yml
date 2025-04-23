@@ -1,0 +1,10 @@
+---
+# tasks file for apache2_configure.main
+- name: Loop over all files with changes
+  when: apache2_configure_regex_modifications | length>0
+  ansible.builtin.include_tasks: settings_loop.yml
+  loop: "{{ apache2_configure_regex_modifications | dict2items }}"
+  loop_control:
+    loop_var: file_item
+  vars:
+    apache2_configure_file_item: "{{ file_item }}"

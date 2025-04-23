@@ -1,0 +1,6 @@
+---
+- name: Configure apache2
+  hosts: apache2
+  tags: [apache2, apache2_configure]
+  roles:
+    - apache2_configure

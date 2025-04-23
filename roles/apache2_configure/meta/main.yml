@@ -1,0 +1,72 @@
+galaxy_info:
+  author: H Dub
+  description: A role to modify Apache2 configurations
+  company: H Dub Technologies
+
+  # If the issue tracker for your role is not on github, uncomment the
+  # next line and provide a value
+  # issue_tracker_url: http://example.com/issue/tracker
+
+  # Choose a valid license ID from https://spdx.org - some suggested licenses:
+  # - BSD-3-Clause (default)
+  # - MIT
+  # - GPL-2.0-or-later
+  # - GPL-3.0-only
+  # - Apache-2.0
+  # - CC-BY-4.0
+  license: MIT
+
+  min_ansible_version: "2.18.4"
+
+  # If this a Container Enabled role, provide the minimum Ansible Container version.
+  # min_ansible_container_version:
+
+  galaxy_tags:
+    - apache2
+    # List tags for your role here, one per line. A tag is a keyword that describes
+    # and categorizes the role. Users find roles by searching for tags. Be sure to
+    # remove the '[]' above, if you add tags to this list.
+    #
+    # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
+    #       Maximum 20 tags per role.
+
+dependencies: []
+  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
+  # if you add dependencies to this list.
+
+argument_specs:
+  # roles/apache2_configure/tasks/main.yml entry point
+  main:
+    short_description: Main entry point for the apache2_configure role
+    description:
+      - This role will make the specified regex substitutions in the specified
+        files. It will restart apache2 if changes are made.
+      - Refer to vars/main.yml for the variables referenced below.
+    author:
+      - H Dub (https://github.com/hdub-tech)
+    options:
+      apache2_configure_server_root:
+        type: "path"
+        description: "The path to the apache2 server root"
+        default: "{{ __apache2_configure_server_root }}"
+
+      apache2_configure_regex_modifications:
+        type: "dict"
+        required: true
+        description:
+          - "A Dictionary of the format:"
+          - "{"
+          - "   FILENAME1: [ {from: 'string', to: 'string', backrefs: true}, {from: 'string', to: 'string'}, ... ],"
+          - "   FILENAME2: [ {from: 'string', to: 'string', backrefs: true}, {from: 'string', to: 'string'}, ... ]"
+          - "}"
+          - "Where FILENAME's are relative to {{ apache2_configure_server_root }} and backrefs is optional"
+
+      apache2_configure_backup:
+        type: "bool"
+        default: "{{ __apache2_configure_backup }}"
+        description: "Whether the file being modified should be backed up"
+
+      apache2_configure_service_name:
+        type: "str"
+        default: "{{ __apache2_configure_service_name }}"
+        description: "The name of the apache2 service which will be restarted if any changes are made"
