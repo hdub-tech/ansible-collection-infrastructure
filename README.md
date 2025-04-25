@@ -9,6 +9,7 @@ A collection of things I commonly use with infrastructure.
 
 - [What's in the box](#whats-in-the-box)
   - [Playbooks](#playbooks)
+  - [Roles](#roles)
 - [Getting Started](#getting-started)
 
 ## What's in the box
@@ -21,14 +22,14 @@ A collection of things I commonly use with infrastructure.
 
 | Playbook | Description | Variables |
 | --- | --- | --- |
-| [hdub_tech.infrastructure.configure_apache.yml] | Uses [hdub_tech.infrastrucutre.apache2_configure role] to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
-| [hdub_tech.infrastructure.configure_swap.yml] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
+| [`hdub_tech.infrastructure.configure_apache2.yml`] | Uses [hdub_tech.infrastructure.apache2_configure] role to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
+| [`hdub_tech.infrastructure.configure_swap.yml`] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
 
 ### Roles
 
 | Role | Description | Variables |
 | --- | --- | --- |
-| [hdub_tech.infrastructure.apache2_configure] | Uses [ansible.builtin.lineinfile module] to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
+| [hdub_tech.infrastructure.apache2_configure] | Uses [`ansible.builtin.lineinfile` module] to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
 
 ## Getting Started
 
@@ -85,10 +86,21 @@ A collection of things I commonly use with infrastructure.
         ansible.builtin.import_playbook: hdub_tech.infrastructure.configure_swap.yml
       ```
 
+5. Use a collection role by providing the entire `namespace.collectionname.rolename`:
+
+   ```yaml
+   - hosts: webservers
+     roles:
+       - hdub_tech.infrastructure.ROLENAME
+     vars:
+       ROLENAME_VARNAME: VARVALUE
+   ```
+
 <!-- Links -->
-[`apache2_configure` role]:                    ./roles/apache2_configure/README.md
-[`apache2_configure` role README]:             ./roles/apache2_configure/README.md#role-variables
-[hdub_tech.infrastructure.configure_swap.yml]: ./playbooks/configure_swap.yml
+[`apache2_configure` role README]:                  ./roles/apache2_configure/README.md#role-variables
+[hdub_tech.infrastructure.apache2_configure]:       ./roles/apache2_configure/README.md
+[`hdub_tech.infrastructure.configure_apache2.yml`]: ./playbooks/configure_apache2.yml
+[`hdub_tech.infrastructure.configure_swap.yml`]:    ./playbooks/configure_swap.yml
 [ansible#76030]:                       https://github.com/ansible/ansible/issues/76030#issuecomment-942520399
 [`ansible.builtin.lineinfile` module]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
 [`ansible-navigator`]:                 https://ansible.readthedocs.io/projects/navigator

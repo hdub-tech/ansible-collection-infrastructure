@@ -9,12 +9,12 @@ files. It will restart apache2 if changes are made.
 >
 > ```bash
 > # From a check-out of this project:
-> ansible-doc -t role {{ role_name }}
+> ansible-doc -t role apache2_configure
 > ```
 >
 > ```bash
 > # From your project, where this collection was installed:
-> ansible-doc -t role hdub_tech.infrastructure.{{ role_name }}
+> ansible-doc -t role hdub_tech.infrastructure.apache2_configure
 > ```
 <!-- markdownlint-disable-line MD028 -->
 > [!NOTE]
@@ -48,14 +48,15 @@ Role Variables
 Dependencies
 ------------
 
-This role is using [`ansible.builtin.lineinfile`] under the hood. The following
+This role is using [`ansible.builtin.lineinfile`] module under the hood. The following
 is a reference mapping of the values from this role to the `lineinfile` module.
 
 | hdub_tech.infrastructure.apache2_configure | ansible.builtin.lineinfile |
 | --- | --- |
-| apache2_configure_regex_modifications.FILENAME[*].from (REQUIRED) | regex |
-| apache2_configure_regex_modifications.FILENAME[*].to (REQUIRED) | line |
-| apache2_configure_regex_modifications.FILENAME[*].backrefs (OPTIONAL) | backrefs |
+| `apache2_configure_regex_modifications.FILENAME[*].from` (REQUIRED) | `regex` |
+| `apache2_configure_regex_modifications.FILENAME[*].to` (REQUIRED) | `line` |
+| `apache2_configure_regex_modifications.FILENAME[*].backrefs` (OPTIONAL) | `backrefs` |
+| `apache2_configure_regex_modifications.FILENAME[*].backup` (OPTIONAL) | `backup` |
 
 Example Playbooks
 -----------------
@@ -71,9 +72,11 @@ keeping all spacing intact:
   vars:
     apache2_configure_regex_modifications:
       mods-available/mpm_prefork.conf:
-        - {from: '(\s+)MaxRequestWorkers(\s+)(\d+)',
-           to: '\g<1>MaxRequestWorkers\g<2>50',
-           backrefs: true }
+        - {
+           from:     '(\s+)MaxRequestWorkers(\s+)(\d+)',
+           to:       '\g<1>MaxRequestWorkers\g<2>50',
+           backrefs: true
+          }
 ```
 
 Overriding defaults with required variables:
@@ -88,9 +91,11 @@ Overriding defaults with required variables:
     apache2_configure_service_name: httpd
     apache2_configure_regex_modifications:
       mods-available/mpm_prefork.conf:
-        - {from:     '(\s+)MaxRequestWorkers(\s+)(\d+)',
+        - {
+           from:     '(\s+)MaxRequestWorkers(\s+)(\d+)',
            to:       '\g<1>MaxRequestWorkers\g<2>50',
-           backrefs: true }
+           backrefs: true
+          }
 ```
 
 References
@@ -111,8 +116,10 @@ Author Information
 
 <!-- Links -->
 [@hdub-tech]:        https://github.com/hdub-tech
+[Example Playbooks]: #example-playbooks
 [development FAQ]:   ../../docs/development.md#why-do-you-have-defaults-in-vars
 [`vars/main.yml`]:   ./vars/main.yml
 [`ansible.builtin.lineinfile`]:        https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
+[`ansible-doc`]:                       https://docs.ansible.com/ansible/latest/cli/ansible-doc.html
 [issue #5]:                            https://github.com/hdub-tech/ansible-collection-infrastructure/issues/5
 [Tuning MaxRequestWorkers for Apache]: https://support.cpanel.net/hc/en-us/articles/360047992273-Tuning-MaxRequestWorkers-for-Apache

@@ -3,7 +3,14 @@
 > [!WARNING]
 > This assumes an `apt` based system using `podman` to manage containers.
 
-## First time SET-UP
+## Table of Contents
+
+- [First time set-up](#first-time-set-up)
+- [Daily Use](#daily-use)
+- [FAQ](#faq)
+  - [Why do you have `defaults` in `vars`?](#why-do-you-have-defaults-in-vars)
+
+## First time set-up
 
 1. Install dependencies:
 
@@ -124,7 +131,8 @@ This section covers some Q/A on why some things are done the way they are done.
 
 ### Why do you have `defaults` in `vars`?
 
-<details><summary>TL;DR: Keeping it DRY. Expand for details</summary>
+<details><summary><i>TL;DR: Keeping it DRY. Expand for details</i></summary>
+
 You may have noticed the following pattern of madness in the
 `apache2_configure` role:
 
@@ -144,7 +152,7 @@ __apache2_configure_server_root: /etc/apache2
 
 I am aware this goes against best practice. However, I prefer [DRY], and not to
 need to update a value in multiple places in the event that (light forbid) it
-need to change. By putting my defaults values in `vars`, they can be used in
+needs to change. By putting my defaults values in `vars`, they can be used in
 `defaults/main.yml`, `meta/main.yml` arg_specs, and I can link to the block in
 the role README. The only draw back is the variables do not expand when using
 `ansible-doc`. They do expand when argument validation fails and frankly I would
