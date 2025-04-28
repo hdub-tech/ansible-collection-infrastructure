@@ -59,13 +59,9 @@ jobs:
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
         with:
           script: |
-            github.rest.git.createTag({
+            github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag: ${{ inputs.new_release_number }},
-              message: "${{ env.GIT_BOT_USERNAME }}: Tag ${{ inputs.new_release_number }}",
-              object: ${{ needs.update_version_nums.outputs.commit_hash }},
-              type: 'commit',
-              tagger.name: ${{ env.GIT_BOT_USERNAME }},
-              tagger.email: ${{ env.GIT_BOT_EMAIL }}
+              ref: "refs/tags/${{ inputs.new_release_number }}",
+              sha: "${{ needs.update_version_nums.outputs.commit_hash }}"
             })
