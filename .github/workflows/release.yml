@@ -25,12 +25,6 @@ jobs:
     outputs:
       commit_hash: ${{ steps.commit_step.outputs.hash }}
     steps:
-      - name: Checks-out repository under $GITHUB_WORKSPACE
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
-
-      - name: Executes version number update script
-        run: ./.github/workflows/release.sh ${{ inputs.new_release_number }} ${{ inputs.previous_release_number }}
-        
       - name: Generate a token
         id: generate-token
         uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
@@ -38,6 +32,14 @@ jobs:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           
+      - name: Checks-out repository under $GITHUB_WORKSPACE
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+
+      - name: Executes version number update script
+        run: ./.github/workflows/release.sh ${{ inputs.new_release_number }} ${{ inputs.previous_release_number }}
+        
       - name: Commits files to main
         id: commit_step
         env:
