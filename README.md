@@ -39,7 +39,7 @@ A collection of things I commonly use with infrastructure.
    collections:
      - name: git@github.com:hdub-tech/ansible-collection-infrastructure.git
        type: git
-       version: 1.0.0
+       version: 1.1.0
     ```
 
 2. Install the `hdub_tech.infrastructure` collection:
