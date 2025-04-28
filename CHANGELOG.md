@@ -1,6 +1,16 @@
 # Release Notes
 
+## {{ NEXT_RELEASE }}
+
+- Adds `apache2_configure` role
+- Adds `configure_apache2.yml` playbook
+- Adds a role skeleton
+- Adds a FAQ to development documentation
+- Updates various lint configuration files
+
 ## 1.0.0
+
+<details>
 
 ### Release Summary
 
@@ -13,3 +23,5 @@ Initial release.
   specific prepare playbook (Useful when creating custom prepare.yml files)
 - Adds a lint and test github action
 - Adds usage and development documentation
+
+</details>
