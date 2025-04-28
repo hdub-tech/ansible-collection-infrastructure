@@ -1,0 +1,61 @@
+---
+name: ansible-collection-infrastructure release
+on:
+  workflow_call:
+    inputs:
+      new_release_number:
+        description: The number of this release (no leading 'v')
+        required: true
+        type: string
+      previous_release_number:  #TODO detect
+        description: The number of the previous release
+        required: true
+        type: string
+
+env:
+  GIT_BOT_USERNAME: "github-actions[bot]"
+  GIT_BOT_EMAIL: "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+permissions:
+  contents: write  # To make commits
+
+jobs:
+  update_version_nums:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.commit_step.outputs.hash }}
+    steps:
+      - name: Checks-out repository under $GITHUB_WORKSPACE
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+
+      - name: Executes version number update script
+        run: ./.github/workflows/release.sh ${{ inputs.new_release_number }} ${{ inputs.previous_release_number }}
+        working-directory: "$GITHUB_WORKSPACE"
+
+      - name: Commits files to main
+        id: commit_step
+        run: |
+          git config user.name ${{ env.GIT_BOT_USERNAME }}
+          git config user.email ${{ env.GIT_BOT_EMAIL }}
+          git commit -am "${{ env.GIT_BOT_USERNAME }}: Update versions pre-${{ inputs.new_release_number }} tagging"
+          git push
+          echo hash=$( git log -n1 --format=%H ) >> "$GITHUB_OUTPUT"
+
+  create_tag:
+    runs-on: ubuntu-latest
+    needs: update_version_nums
+    steps:
+      - name: Creates tag
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea  # v7.0.1
+        with:
+          script: |
+            github.rest.git.createTag({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag: ${{ inputs.new_release_number }},
+              message: "${{ env.GIT_BOT_USERNAME }}: Tag ${{ inputs.new_release_number }}",
+              object: ${{ needs.update_version_nums.outputs.commit_hash }},
+              type: 'commit',
+              tagger.name: ${{ env.GIT_BOT_USERNAME }},
+              tagger.email: ${{ env.GIT_BOT_EMAIL }}
+            })
