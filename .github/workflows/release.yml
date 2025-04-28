@@ -1,7 +1,7 @@
 ---
 name: ansible-collection-infrastructure release
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       new_release_number:
         description: The number of this release (no leading 'v')
