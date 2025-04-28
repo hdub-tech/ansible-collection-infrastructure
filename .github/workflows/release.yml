@@ -19,22 +19,9 @@ env:
 permissions:
   contents: write  # To make commits
 
-jobs:
-  generate_token:
-    runs-on: ubuntu-latest
-    outputs:
-      gh_token: ${{ steps.generate-token.outputs.token }}
-    steps:
-      - name: Generate a token
-        id: generate-token
-        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          
+jobs:          
   update_version_nums:
     runs-on: ubuntu-latest
-    needs: generate_token
     outputs:
       commit_hash: ${{ steps.commit_step.outputs.hash }}
     steps:
@@ -43,11 +30,18 @@ jobs:
 
       - name: Executes version number update script
         run: ./.github/workflows/release.sh ${{ inputs.new_release_number }} ${{ inputs.previous_release_number }}
-
+        
+      - name: Generate a token
+        id: generate-token
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5  # v2.0.2
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          
       - name: Commits files to main
         id: commit_step
         env:
-          GH_TOKEN: ${{ needs.generate_token.outputs.gh_token }}
+          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           git config user.name ${{ env.GIT_BOT_USERNAME }}
           git config user.email ${{ env.GIT_BOT_EMAIL }}
