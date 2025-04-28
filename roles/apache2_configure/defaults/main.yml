@@ -1,0 +1,5 @@
+---
+# defaults file for apache2_configure
+apache2_configure_server_root:         "{{ __apache2_configure_server_root }}"
+apache2_configure_backup:              "{{ __apache2_configure_backup }}"
+apache2_configure_service_name:        "{{ __apache2_configure_service_name }}"

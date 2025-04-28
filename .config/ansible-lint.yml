@@ -1,3 +1,8 @@
+quiet: true
+
+skip_list:
+  - yaml[colons]
+
 exclude_paths:
   - .github/workflows
   - collections/ansible_collections

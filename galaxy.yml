@@ -38,6 +38,7 @@ tags:
   - hdub_tech_infrastructure
   - infrastructure
   - swap
+  - apache2
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range

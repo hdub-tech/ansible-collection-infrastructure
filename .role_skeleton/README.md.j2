@@ -1,0 +1,83 @@
+{{ role_name | basename }}
+=========
+
+CHANGEME
+
+> [!NOTE]
+> You can also run [`ansible-doc`] to see a summary of this role and it's variables.
+>
+> ```bash
+> # From a check-out of this project:
+> ansible-doc -t role {{ role_name | basename }}
+> ```
+>
+> ```bash
+> # From your project, where this collection was installed:
+> ansible-doc -t role hdub_tech.infrastructure.{{ role_name | basename }}
+> ```
+
+Requirements
+------------
+
+<!-- markdownlint-disable-line MD013 --> _Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required._
+
+Role Variables
+--------------
+
+<!-- markdownlint-disable-line MD013 --> _A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well._
+> [!TIP]
+> The real source of truth for default values can be observed in the [`vars/main.yml`]
+> file in the `DEFAULTS` block (See the [development FAQ] for the reasoning
+> behind using this location). I try to keep docs up to date in lock step with
+> code changes, but I might have missed something.
+
+| Variable | Required | Default | Description |
+| --- | --- | --- | --- |
+| `VAR1` | YES |  | CHANGEME. See [Example Playbooks] or `ansible-doc` for a specific example. |
+| `VAR2` | No | `CHANGEME` | CHANGEME |
+
+Dependencies
+------------
+
+<!-- markdownlint-disable-line MD013 --> _A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles. Make sure they are in the meta file too!_
+
+Example Playbooks
+-----------------
+
+With defaults and required variables:
+
+```yaml
+- hosts: servers
+  roles:
+    - { role: hdub_tech.infrastructure.{{ role_name | basename }}, x: 42 }
+```
+
+Overriding defaults with required variables:
+
+```yaml
+- hosts: linux
+  roles:
+    - hdub_tech.infrastructure.{{ role_name | basename }}
+  vars:
+    VAR1: VALUE1
+```
+
+References
+----------
+
+- [ONE]
+
+License
+-------
+
+MIT
+
+Author Information
+------------------
+
+[@hdub-tech]
+
+<!-- Links -->
+[@hdub-tech]:        https://github.com/hdub-tech
+[development FAQ]:   ../../docs/development.md#why-do-you-have-defaults-in-vars
+[`vars/main.yml`]:   ./vars/main.yml

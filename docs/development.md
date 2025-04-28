@@ -3,7 +3,14 @@
 > [!WARNING]
 > This assumes an `apt` based system using `podman` to manage containers.
 
-## First time SET-UP
+## Table of Contents
+
+- [First time set-up](#first-time-set-up)
+- [Daily Use](#daily-use)
+- [FAQ](#faq)
+  - [Why do you have `defaults` in `vars`?](#why-do-you-have-defaults-in-vars)
+
+## First time set-up
 
 1. Install dependencies:
 
@@ -118,7 +125,45 @@
     ssh-add ~/.ssh/$USER_$DESC_infra
     ```
 
+## FAQ
+
+This section covers some Q/A on why some things are done the way they are done.
+
+### Why do you have `defaults` in `vars`?
+
+<details><summary><i>TL;DR: Keeping it DRY. Expand for details</i></summary>
+
+You may have noticed the following pattern of madness in the
+`apache2_configure` role:
+
+```yaml
+# defaults/main.yml
+apache2_configure_server_root: "{{ __apache2_configure_server_root }}"
+...
+```
+
+```yaml
+# vars/main.yml
+# ============================== START DEFAULTS ============================== #
+__apache2_configure_server_root: /etc/apache2
+...
+# =============================== END DEFAULTS =============================== #
+```
+
+I am aware this goes against best practice. However, I prefer [DRY], and not to
+need to update a value in multiple places in the event that (light forbid) it
+needs to change. By putting my defaults values in `vars`, they can be used in
+`defaults/main.yml`, `meta/main.yml` arg_specs, and I can link to the block in
+the role README. The only draw back is the variables do not expand when using
+`ansible-doc`. They do expand when argument validation fails and frankly I would
+rather a user see them when they hit an error rather than the off chance they
+are even aware they can use `ansible-doc` for that information. I included a
+message in the argument_spec that the values can be found in `vars/main.yml` as
+well.
+</details>
+
 <!-- Links -->
+[DRY]:     https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 [pyenv]:   https://github.com/pyenv/pyenv
 [vagrant]: https://developer.hashicorp.com/vagrant/install
 [venv]:    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments

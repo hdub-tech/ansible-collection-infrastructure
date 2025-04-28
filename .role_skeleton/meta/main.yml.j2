@@ -1,0 +1,133 @@
+galaxy_info:
+  author: H Dub
+  description: CHANGEME 
+  company: H Dub Technologies
+
+  # If the issue tracker for your role is not on github, uncomment the
+  # next line and provide a value
+  # issue_tracker_url: http://example.com/issue/tracker
+
+  # Choose a valid license ID from https://spdx.org - some suggested licenses:
+  # - BSD-3-Clause (default)
+  # - MIT
+  # - GPL-2.0-or-later
+  # - GPL-3.0-only
+  # - Apache-2.0
+  # - CC-BY-4.0
+  license: MIT
+
+  min_ansible_version: "2.18.4"
+
+  # If this a Container Enabled role, provide the minimum Ansible Container version.
+  # min_ansible_container_version:
+
+  galaxy_tags: []
+    # List tags for your role here, one per line. A tag is a keyword that describes
+    # and categorizes the role. Users find roles by searching for tags. Be sure to
+    # remove the '[]' above, if you add tags to this list.
+    #
+    # NOTE: A tag is limited to a single word comprised of alphanumeric characters.
+    #       Maximum 20 tags per role.
+
+dependencies: []
+  # List your role dependencies here, one per line. Be sure to remove the '[]' above,
+  # if you add dependencies to this list.
+
+argument_specs:
+  # roles/{{ role_name | basename }}/tasks/main.yml entry point
+  main:
+    short_description: Main entry point for the {{ role_name | basename }} role
+    description:
+      - This is the main entrypoint for the {{ role_name | basename }} role.
+      - Here we can describe what this entrypoint does in lengthy words.
+      - Every new list item is a new paragraph. You can have multiple sentences
+        per paragraph.
+    author:
+      - H Dub (https://github.com/hdub-tech)
+    options:
+      {{ role_name | basename }}_int:
+        type: "int"
+        required: false
+        default: 42
+        description:
+          - "The integer value, defaulting to 42."
+          - "This is a second paragraph."
+
+      {{ role_name | basename }}_str:
+        type: "str"
+        required: true
+        description: "The string value"
+
+      {{ role_name | basename }}_list:
+        type: "list"
+        elements: "str"
+        required: true
+        description: "A list of string values."
+        version_added: 1.3.0
+
+      {{ role_name | basename }}_list_with_dicts:
+        type: "list"
+        elements: "dict"
+        required: false
+        default:
+          - {{ role_name | basename }}_food_kind: "meat"
+            {{ role_name | basename }}_food_boiling_required: true
+            {{ role_name | basename }}_food_preparation_time: 60
+          - {{ role_name | basename }}_food_kind: "fruits"
+            {{ role_name | basename }}_food_preparation_time: 5
+        description: "A list of dicts with a defined structure and with default a value."
+        options:
+          {{ role_name | basename }}_food_kind:
+            type: "str"
+            choices:
+              - "vegetables"
+              - "fruits"
+              - "grains"
+              - "meat"
+            required: false
+            description: "A string value with a limited list of allowed choices."
+
+          {{ role_name | basename }}_food_boiling_required:
+            type: "bool"
+            required: false
+            default: false
+            description: "Whether the kind of food requires boiling before consumption."
+
+          {{ role_name | basename }}_food_preparation_time:
+            type: int
+            required: true
+            description: "Time to prepare a dish in minutes."
+
+      {{ role_name | basename }}_dict_with_suboptions:
+        type: "dict"
+        required: false
+        default:
+          {{ role_name | basename }}_host: "bar.foo"
+          {{ role_name | basename }}_exclude_host: true
+          {{ role_name | basename }}_path: "/etc/myapp"
+        description: "A dict with a defined structure and default values."
+        options:
+          {{ role_name | basename }}_host:
+            type: "str"
+            choices:
+              - "foo.bar"
+              - "bar.foo"
+              - "ansible.foo.bar"
+            required: true
+            description: "A string value with a limited list of allowed choices."
+
+          {{ role_name | basename }}_exclude_host:
+            type: "bool"
+            required: true
+            description: "A boolean value."
+
+          {{ role_name | basename }}_path:
+            type: "path"
+            required: true
+            description: "A path value."
+
+          original_name:
+            type: list
+            elements: "str"
+            required: false
+            description: "An optional list of string values."
