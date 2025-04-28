@@ -1,5 +1,5 @@
 ---
-name: ansible-collection-infrastructure release
+name: Release ansible-collection-infrastructure
 on:
   workflow_dispatch:
     inputs:
@@ -30,7 +30,6 @@ jobs:
 
       - name: Executes version number update script
         run: ./.github/workflows/release.sh ${{ inputs.new_release_number }} ${{ inputs.previous_release_number }}
-        working-directory: "$GITHUB_WORKSPACE"
 
       - name: Commits files to main
         id: commit_step
