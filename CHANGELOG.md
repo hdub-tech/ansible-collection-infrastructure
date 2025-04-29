@@ -1,12 +1,13 @@
 # Release Notes
 
-## 1.1.0
+## {{ NEXT_RELEASE }}
 
 - Adds `apache2_configure` role
 - Adds `configure_apache2.yml` playbook
 - Adds a role skeleton
 - Adds a FAQ to development documentation
 - Updates various lint configuration files
+- Adds release workflow
 
 ## 1.0.0
 
