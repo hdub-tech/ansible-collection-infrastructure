@@ -169,5 +169,5 @@ well.
 [venv]:    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
 
 <!-- markdownlint-configure-file {
-  MD029: false
+  ol-prefix: false
 } -->

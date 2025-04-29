@@ -16,7 +16,7 @@ files. It will restart apache2 if changes are made.
 > # From your project, where this collection was installed:
 > ansible-doc -t role hdub_tech.infrastructure.apache2_configure
 > ```
-<!-- markdownlint-disable-line MD028 -->
+<!-- markdownlint-disable-line no-blanks-blockquote -->
 > [!NOTE]
 > Yes I know, you can technically use this for any file on the system. But if
 > you had access to execute this role, you had access to do it manually
