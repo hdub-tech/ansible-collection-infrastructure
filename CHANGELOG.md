@@ -1,6 +1,6 @@
 # Release Notes
 
-## {{ NEXT_RELEASE }}
+## 1.1.0
 
 - Adds `apache2_configure` role
 - Adds `configure_apache2.yml` playbook
