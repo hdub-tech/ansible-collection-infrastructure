@@ -1,6 +1,12 @@
 # Release Notes
 
+## {{ NEXT_RELEASE }}
+
+- Updates docs with tip for using `import_playbook`
+
 ## 1.1.0
+
+<details>
 
 - Adds `apache2_configure` role
 - Adds `configure_apache2.yml` playbook
@@ -8,6 +14,8 @@
 - Adds a FAQ to development documentation
 - Updates various lint configuration files
 - Adds release workflow
+
+</details>
 
 ## 1.0.0
 

@@ -79,13 +79,20 @@ A collection of things I commonly use with infrastructure.
       ansible-navigator run hdub_tech.infrastructure.configure_swap.yml -i PATH_TO_YOUR_INVENTORY [--check]
       ```
 
-   c. To use a playbook in another playbook:
+   c. To use a collection playbook in your playbook:
 
       ```yaml
       - name: Configure swap
-        ansible.builtin.import_playbook: hdub_tech.infrastructure.configure_swap.yml
+        ansible.builtin.import_playbook: hdub_tech.infrastructure.configure_swap
       ```
 
+> [!TIP]
+> The lack of `.yml` on the `import_playbook` line is intentional! If you
+> include the extension, `ansible-lint` (or more specifically the underlying
+> `ansible-playbook --syntax-check`) will report `ERROR Failed to find playbook`
+> Most [Ansible] [`import_playbook`] documentation examples _show_ this, but do
+> not explicitly _state_ this fact.
+<!-- markdownlint-disable-next-line ol-prefix -->
 5. Use a collection role by providing the entire `namespace.collectionname.rolename`:
 
    ```yaml
@@ -101,8 +108,10 @@ A collection of things I commonly use with infrastructure.
 [hdub_tech.infrastructure.apache2_configure]:       ./roles/apache2_configure/README.md
 [`hdub_tech.infrastructure.configure_apache2.yml`]: ./playbooks/configure_apache2.yml
 [`hdub_tech.infrastructure.configure_swap.yml`]:    ./playbooks/configure_swap.yml
+[Ansible]:                             https://docs.ansible.com/ansible/latest/collections_guide/collections_using_playbooks.html#using-a-playbook-from-a-collection
 [ansible#76030]:                       https://github.com/ansible/ansible/issues/76030#issuecomment-942520399
 [`ansible.builtin.lineinfile` module]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
 [`ansible-navigator`]:                 https://ansible.readthedocs.io/projects/navigator
 [geerlingguy.swap role]:               https://github.com/geerlingguy/ansible-role-swap
 [geerlingguy.swap#role-variables]:     https://github.com/geerlingguy/ansible-role-swap/tree/master?tab=readme-ov-file#role-variables
+[`import_playbook`]:                   https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_playbook_module.html#examples
