@@ -13,7 +13,6 @@ env:
   ANSIBLE_FORCE_COLOR: '1'
   ANSIBLE_VERBOSITY: 1
   PY_COLORS: '1'
-  VAGRANT_VERSION: 2.4.3-1
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -60,8 +59,7 @@ jobs:
         run: |
           wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
           echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          # shellcheck disable=SC2086
-          sudo apt update && sudo apt install virtualbox vagrant=$VAGRANT_VERSION parallel
+          sudo apt update && sudo apt install virtualbox vagrant parallel
           cd "$GITHUB_WORKSPACE" || exit 1
           pip install -r python-requirements.txt
           ansible-galaxy install -r ansible-requirements.yml
