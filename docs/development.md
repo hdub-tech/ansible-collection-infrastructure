@@ -81,6 +81,7 @@
 
    a. TEMPORARY PATCH REQUIRED (until [ansible-community/molecule-plugins#314]
       is merged):
+
       ```bash
       # Use fqcn for community.vagrant.vagrant in vagrant molecule_plugin
       sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' ${VIRTUAL_ENV}/lib/python*/site-packages/molecule_plugins/vagrant/playbooks/*.yml

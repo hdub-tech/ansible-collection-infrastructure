@@ -40,7 +40,7 @@ Role Variables
 
 | Variable | Required | Default | Description |
 | --- | --- | --- | --- |
-| `apache2_configure_regex_modifications` | YES |  | A dictionary of filename keys to an array of from/to regex/string modifications to make to said file. See [Example Playbooks] or `ansible-doc` for a specific example. |
+| `apache2_configure_regex_modifications` | YES | | A dictionary of filename keys to an array of from/to regex/string modifications to make to said file. See [Example Playbooks] or `ansible-doc` for a specific example. |
 | `apache2_configure_server_root` | No | `/etc/apache2` | The path to the apache2 server root |
 | `apache2_configure_backup` | No | `true` | Whether the file being modified should be backed up |
 | `apache2_configure_service_name` | No | `apache2` | The name of the apache2 service which will be restarted if any changes are made |
