@@ -5,6 +5,7 @@ skip_list:
 
 exclude_paths:
   - .github/workflows
+  - .markdownlint*
   - collections/ansible_collections
   - molecule/resources/playbooks/prepare_default.yml
   - molecule/configure_swap/prepare.yml
