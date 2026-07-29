@@ -1,10 +1,12 @@
 ---
 roles:
   - name: geerlingguy.swap
-    version: 1.2.0
-
+    version: 2.0.0
 collections:
   # Required for geerlingguy.swap
   # Related: https://github.com/ansible/ansible/issues/76030
   - name: ansible.posix
-    version: 2.0.0
+    version: 2.2.2
+  - name: http://github.com/ansible-collections/community.vagrant.git
+    type: git
+    version: eea53829158af3809dde50dfb3231be004ff6f2f  # main, post recent revival 2026/07/21

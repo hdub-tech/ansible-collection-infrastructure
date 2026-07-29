@@ -79,6 +79,13 @@
    ansible-galaxy install -r ansible-requirements.yml
    ```
 
+   a. TEMPORARY PATCH REQUIRED (until [ansible-community/molecule-plugins#314]
+      is merged):
+      ```bash
+      # Use fqcn for community.vagrant.vagrant in vagrant molecule_plugin
+      sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' ${VIRTUAL_ENV}/lib/python*/site-packages/molecule_plugins/vagrant/playbooks/*.yml
+      ```
+
 6. Confirm you can execute Molecule tests:
 
    ```bash
@@ -163,6 +170,7 @@ well.
 </details>
 
 <!-- Links -->
+[ansible-community/molecule-plugins#314]: https://github.com/ansible-community/molecule-plugins/pull/314
 [DRY]:     https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
 [pyenv]:   https://github.com/pyenv/pyenv
 [vagrant]: https://developer.hashicorp.com/vagrant/install
