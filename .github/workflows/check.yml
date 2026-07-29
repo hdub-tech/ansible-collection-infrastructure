@@ -73,6 +73,12 @@ jobs:
           echo "Threads: $( parallel --number-of-threads )"
           parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04
 
+      - name: Hack for GH-49 (missing fqcn in molecule_plugins/vagrant)
+        run: |
+          export MP_PATH=$( pip show molecule-plugins | grep Location | cut -d' ' -f2 )
+          sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' "${MP_PATH}"/molecule_plugins/vagrant/playbooks/*.yml
+          grep -C2 "community.vagrant" "${MP_PATH}"/molecule_plugins/vagrant/playbooks/*.yml
+
       - name: Run molecule playbook tests in parallel
         run: |
           # parallel exit code = number of tests not executed... expecting 1
