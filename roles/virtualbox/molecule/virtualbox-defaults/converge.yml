@@ -1,0 +1,6 @@
+---
+- name: Converge virtualbox role (Default values)
+  hosts: linux
+  gather_facts: true
+  roles:
+    - role: hdub_tech.infrastructure.virtualbox

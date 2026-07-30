@@ -1,0 +1,24 @@
+---
+# tasks file for virtualbox
+- name: Check if already installed
+  tags: [virtualbox, precheck]
+  ansible.builtin.command: "which {{ virtualbox_command }}"
+  changed_when: false
+  register: virtualbox_precheck
+  failed_when: virtualbox_precheck.rc in [2,127]  # only fail if no which command
+
+- name: Only install if not already there
+  when: virtualbox_precheck.rc == 1
+  block:
+    - name: Gather necessary facts
+      tags: [virtualbox, gather_facts]
+      ansible.builtin.gather_facts:
+        gather_subset: [kernel, os_family]
+
+    - name: Load per OS variables
+      tags: [virtualbox, variables]
+      ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+    - name: Perform per OS virtualbox tasks
+      tags: [virtualbox, tasks]
+      ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] }}.yml"

@@ -1,0 +1,28 @@
+---
+# tasks file for virtualbox/Debian
+- name: Fetch VirtualBox public key
+  tags: [virtualbox, wget, public_key, signing_key]
+  ansible.builtin.get_url:
+    url: "{{ virtualbox_public_key_url }}"
+    dest: "{{ virtualbox_public_key_local }}"
+    mode: "0600"
+
+- name: Set-up virtualbox repo with key
+  tags: [virtualbox, apt_repo]
+  become: true
+  ansible.builtin.shell:
+    creates: "{{ virtualbox_sources_list }}"
+    cmd: |
+      gpg --yes --output "{{ virtualbox_signing_key }}" --dearmor "{{ virtualbox_public_key_local }}"
+      echo "{{ virtualbox_sources_content }}" > "{{ virtualbox_sources_list }}"
+
+- name: Install dependencies
+  tags: [virtualbox, dependencies]
+  become: true
+  ansible.builtin.apt:
+    name: "{{ virtualbox_packages }}"
+    state: latest  # noqa package-latest
+    update_cache: true
+    # only_upgrade: true  # Currently doesn't work, hence noqa
+
+# TODO - name: Add user to vboxusers groups for USB access

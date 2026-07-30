@@ -6,6 +6,7 @@
 - Adds manual use of `-c FILE` to molecule commands due to
   [ansible/molecule#4142]
 - Adds `vagrant` role (Debian only)
+- Adds `virtualbox` role (Debian only)
 - Adds `vagrant` play to `install-virtualization-tools.yml`
 
 ## 1.1.0

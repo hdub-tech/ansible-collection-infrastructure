@@ -1,0 +1,26 @@
+---
+- name: Verify virtualbox role (Default values)
+  hosts: linux
+  gather_facts: true
+  pre_tasks:
+    - name: Load per OS variables (avoid post-INJECT_FACTS_AS_VARS migration warning)
+      tags: [virtualbox, variables]
+      ansible.builtin.include_vars:
+        file: "{{ vars_file }}"
+      loop:
+        - "../../vars/main.yml"
+        - "../../vars/{{ ansible_facts['os_family'] }}.yml"
+      loop_control:
+        loop_var: vars_file
+  tasks:
+    - name: Check that the virtualbox_command is on the path
+      ansible.builtin.command: "which {{ virtualbox_command }}"  # noqa no-changed-when
+      register: virtualbox_which_register
+      changed_when: false
+      failed_when: virtualbox_which_register.rc == 1
+
+    - name: Check that Guest Additions ISO exists
+      ansible.builtin.stat:
+        path: "{{ virtualbox_guest_additions_path }}"
+      register: virtualbox_guest_iso_register
+      failed_when: not virtualbox_guest_iso_register.stat.exists
