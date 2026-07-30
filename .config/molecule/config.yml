@@ -19,7 +19,3 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_CONFIG: ${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg
-  inventory:
-    group_vars:
-      linux:
-        ansible_python_interpreter: /usr/bin/python3
