@@ -1,0 +1,26 @@
+---
+# tasks file for vagrant/Debian
+- name: Fetch Vagrant public key
+  tags: [vagrant, wget, public_key, signing_key]
+  ansible.builtin.get_url:
+    url: "{{ vagrant_public_key_url }}"
+    dest: "{{ vagrant_public_key_local }}"
+    mode: "0600"
+
+- name: Set-up vagrant repo with key
+  tags: [vagrant, apt_repo]
+  become: true
+  ansible.builtin.shell:
+    creates: "{{ vagrant_sources_list }}"
+    cmd: |
+      gpg --yes --output "{{ vagrant_signing_key }}" --dearmor "{{ vagrant_public_key_local }}"
+      echo "{{ vagrant_sources_content }}" > "{{ vagrant_sources_list }}"
+
+- name: Install packages
+  tags: [vagrant, apt_install]
+  become: true
+  ansible.builtin.apt:
+    name: "{{ vagrant_packages }}"
+    state: latest  # noqa package-latest
+    update_cache: true
+    # only_upgrade: true  # Currently doesn't work, hence noqa

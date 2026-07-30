@@ -1,0 +1,12 @@
+---
+# Debian vars file for vagrant
+vagrant_public_key_url:   https://apt.releases.hashicorp.com/gpg
+vagrant_public_key_local: "/tmp/{{ vagrant_public_key_url | basename }}"
+vagrant_sources_list:     /etc/apt/sources.list.d/hashicorp.list
+vagrant_repository_url:   https://apt.releases.hashicorp.com
+vagrant_signing_key:      /usr/share/keyrings/hashicorp-archive-keyring.gpg
+# TODO arch should be set with dpkg --get-architecture
+vagrant_sources_content: >-
+  "deb [arch=amd64 signed-by={{ vagrant_signing_key }}] {{ vagrant_repository_url }} {{ ansible_facts['distribution_release'] }} main"
+vagrant_packages:
+  - vagrant

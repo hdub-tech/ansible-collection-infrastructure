@@ -79,7 +79,17 @@
    ansible-galaxy install -r ansible-requirements.yml
    ```
 
-   a. TEMPORARY PATCH REQUIRED (until [ansible-community/molecule-plugins#314]
+   a. Set up the local collection layout so `hdub_tech.infrastructure.*`
+      FQCNs resolve to your working copy (required for playbooks that
+      reference internal roles by FQCN):
+
+      ```bash
+      # from repo root
+      mkdir -p collections/ansible_collections/hdub_tech
+      ln -sfT "$(pwd)" collections/ansible_collections/hdub_tech/infrastructure
+      ```
+
+   b. TEMPORARY PATCH REQUIRED (until [ansible-community/molecule-plugins#314]
       is merged):
 
       ```bash

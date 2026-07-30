@@ -1,0 +1,24 @@
+---
+# tasks file for vagrant
+- name: Check if already installed
+  tags: [vagrant, precheck]
+  ansible.builtin.command: "which {{ vagrant_command }}"
+  changed_when: false
+  register: vagrant_precheck
+  failed_when: vagrant_precheck.rc in [2,127]  # only fail if no which command
+
+- name: Only install if not already there
+  when: vagrant_precheck.rc == 1
+  block:
+    - name: Gather necessary facts
+      tags: [vagrant, gather_facts]
+      ansible.builtin.gather_facts:
+        gather_subset: [kernel, os_family]
+
+    - name: Load per OS variables
+      tags: [vagrant, variables]
+      ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+    - name: Perform per OS vagrant tasks
+      tags: [vagrant, tasks]
+      ansible.builtin.include_tasks: "{{ ansible_facts['os_family'] }}.yml"

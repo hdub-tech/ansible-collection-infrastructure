@@ -1,0 +1,11 @@
+---
+- name: Verify install-virtualization-tools.yml playbook
+  hosts: linux
+  gather_facts: false
+  tasks:
+    - name: Check vagrant is installed
+      ansible.builtin.command: which vagrant  # noqa no-changed-when
+      check_mode: false
+      changed_when: false
+      register: vagrant_which
+      failed_when: vagrant_which.rc == 1

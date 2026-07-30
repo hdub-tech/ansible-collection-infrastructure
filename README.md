@@ -24,12 +24,14 @@ A collection of things I commonly use with infrastructure.
 | --- | --- | --- |
 | [`hdub_tech.infrastructure.configure_apache2.yml`] | Uses [hdub_tech.infrastructure.apache2_configure] role to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
 | [`hdub_tech.infrastructure.configure_swap.yml`] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
+| [`hdub_tech.infrastructure.install-virtualization-tools.yml`] | Uses [hdub_tech.infrastructure.vagrant] role to install vagrant. GH-17 will add virtualbox. | Refer to [`vagrant` role README] |
 
 ### Roles
 
 | Role | Description | Variables |
 | --- | --- | --- |
 | [hdub_tech.infrastructure.apache2_configure] | Uses [`ansible.builtin.lineinfile` module] to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
+| [hdub_tech.infrastructure.vagrant] | Installs [hashicorp apt repo] and [vagrant] | Refer to [`vagrant` role README] |
 
 ## Getting Started
 
@@ -104,14 +106,19 @@ A collection of things I commonly use with infrastructure.
    ```
 
 <!-- Links -->
-[`apache2_configure` role README]:                  ./roles/apache2_configure/README.md#role-variables
-[hdub_tech.infrastructure.apache2_configure]:       ./roles/apache2_configure/README.md
-[`hdub_tech.infrastructure.configure_apache2.yml`]: ./playbooks/configure_apache2.yml
-[`hdub_tech.infrastructure.configure_swap.yml`]:    ./playbooks/configure_swap.yml
+[`apache2_configure` role README]:                             ./roles/apache2_configure/README.md#role-variables
+[hdub_tech.infrastructure.apache2_configure]:                  ./roles/apache2_configure/README.md
+[`hdub_tech.infrastructure.configure_apache2.yml`]:            ./playbooks/configure_apache2.yml
+[`hdub_tech.infrastructure.configure_swap.yml`]:               ./playbooks/configure_swap.yml
+[`hdub_tech.infrastructure.install-virtualization-tools.yml`]: ./playbooks/install-virtualization-tools.yml
+[hdub_tech.infrastructure.vagrant]:                            ./roles/vagrant/README.md
+[`vagrant` role README]:                                       ./roles/vagrant/README.md#role-variables
 [Ansible]:                             https://docs.ansible.com/ansible/latest/collections_guide/collections_using_playbooks.html#using-a-playbook-from-a-collection
 [ansible#76030]:                       https://github.com/ansible/ansible/issues/76030#issuecomment-942520399
 [`ansible.builtin.lineinfile` module]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
 [`ansible-navigator`]:                 https://ansible.readthedocs.io/projects/navigator
 [geerlingguy.swap role]:               https://github.com/geerlingguy/ansible-role-swap
 [geerlingguy.swap#role-variables]:     https://github.com/geerlingguy/ansible-role-swap/tree/master?tab=readme-ov-file#role-variables
+[hashicorp apt repo]:                  https://apt.releases.hashicorp.com
 [`import_playbook`]:                   https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_playbook_module.html#examples
+[vagrant]:                             https://developer.hashicorp.com/vagrant/install

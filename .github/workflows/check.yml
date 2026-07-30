@@ -13,6 +13,7 @@ env:
   ANSIBLE_FORCE_COLOR: '1'
   ANSIBLE_VERBOSITY: 1
   PY_COLORS: '1'
+  SKIP_ANSIBLE_ROLE_TESTS: 'geerlingguy.swap apache2_configure'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -57,19 +58,24 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install virtualbox vagrant parallel
+          # TODO GH-17: replace virtualbox apt install with hdub_tech.infrastructure.virtualbox role
+          sudo apt update && sudo apt install virtualbox parallel
           cd "$GITHUB_WORKSPACE" || exit 1
           pip install -r python-requirements.txt
           ansible-galaxy install -r ansible-requirements.yml
+          # simulate collection install for ansible-playbook run
+          mkdir -p collections/ansible_collections/hdub_tech
+          ln -sfT "$GITHUB_WORKSPACE" collections/ansible_collections/hdub_tech/infrastructure
+          ansible-playbook -i localhost,linux -c local \
+            "$GITHUB_WORKSPACE"/playbooks/install-virtualization-tools.yml \
+            --tags vagrant
 
       - name: Add the vagrant boxes to prevent race conditions during parallel molecule tests
         run: |
           echo "Sockets: $( parallel --number-of-sockets )"
           echo "Cores: $( parallel --number-of-cores )"
           echo "Threads: $( parallel --number-of-threads )"
-          parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04
+          parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04 bento/ubuntu-26.04
 
       - name: Hack for GH-49 (missing fqcn in molecule_plugins/vagrant)
         run: |
@@ -82,3 +88,17 @@ jobs:
           # parallel exit code = number of tests not executed... expecting 1
           # shellcheck disable=SC1083
           parallel --filter='"{/}" ne "resources"' molecule -c $GITHUB_WORKSPACE/.config/molecule/config.yml test -s {/} ::: extensions/molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
+
+      - name: Run molecule role tests in parallel (scenarios sequentially)
+        run: |
+          run_role() {
+            local dir="$1" base
+            base=$(basename "$dir")
+            [[ "$SKIP_ANSIBLE_ROLE_TESTS" =~ $base ]] && return 0
+            cd "$dir" || exit 1
+            molecule -c "$GITHUB_WORKSPACE/.config/molecule/config.yml" test --all
+          }
+          # export function/vars so parallel subshell can use
+          export -f run_role
+          export SKIP_ANSIBLE_ROLE_TESTS GITHUB_WORKSPACE
+          parallel run_role ::: "$GITHUB_WORKSPACE"/roles/*/

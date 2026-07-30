@@ -1,0 +1,8 @@
+---
+- name: Install vagrant
+  hosts: linux
+  tags: [vagrant]
+  roles:
+    - hdub_tech.infrastructure.vagrant
+
+# TODO GH-17: add "Install virtualbox" play here for hdub_tech.infrastructure.virtualbox role
