@@ -1,4 +1,8 @@
 ---
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
 scenario:
   test_sequence:
     # - dependency
