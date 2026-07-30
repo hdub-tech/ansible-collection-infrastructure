@@ -104,7 +104,19 @@
    molecule -c .config/molecule/config.yml test --all
    ```
 
-7. AS NEEDED: Prep your system for ssh use.
+7. Confirm project lints clean with [ansible-lint] and
+   [markdownlint-cli2]:
+
+   ```bash
+   # from repo root
+   ansible-lint
+   ```
+   ```bash
+   # from repo root
+   podman run --rm -v .:/workdir docker.io/davidanson/markdownlint-cli2:v0.22.1
+   ```
+
+8. AS NEEDED: Prep your system for ssh use.
 
     a. Copy template ssh config from password manager to your host.
     (_TODO Flesh out details_)
@@ -116,7 +128,7 @@
     ssh-add ~/.ssh/$USER_$DESC_infra
     ```
 
-8. Ensure `ansible-navigator` works against your localhost (_The following
+9. Ensure `ansible-navigator` works against your localhost (_The following
    commands will only gather information about the setup of your system - no
    changes will be made_).
 
@@ -183,8 +195,10 @@ well.
 
 <!-- Links -->
 [ansible-community/molecule-plugins#314]: https://github.com/ansible-community/molecule-plugins/pull/314
-[DRY]:                   https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[ansible-lint]:          https://ansible.readthedocs.io/projects/lint/
 [ansible/molecule#4142]: https://github.com/ansible/molecule/issues/4142
+[DRY]:                   https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[markdownlint-cli2]:     https://github.com/DavidAnson/markdownlint-cli2
 [pyenv]:                 https://github.com/pyenv/pyenv
 [vagrant]:               https://developer.hashicorp.com/vagrant/install
 [venv]:                  https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
