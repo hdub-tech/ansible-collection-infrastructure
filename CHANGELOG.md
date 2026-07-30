@@ -3,6 +3,8 @@
 ## {{ NEXT_RELEASE }}
 
 - Updates docs with tip for using `import_playbook`
+- Adds manual use of `-c FILE` to molecule commands due to
+  [ansible/molecule#4142]
 
 ## 1.1.0
 
@@ -34,3 +36,6 @@ Initial release.
 - Adds usage and development documentation
 
 </details>
+
+<!-- Links -->
+[ansible/molecule#4142]: https://github.com/ansible/molecule/issues/4142

@@ -87,10 +87,11 @@
       sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' ${VIRTUAL_ENV}/lib/python*/site-packages/molecule_plugins/vagrant/playbooks/*.yml
       ```
 
-6. Confirm you can execute Molecule tests:
-
+6. Confirm you can execute Molecule tests. (`-c FILE` required until
+   [ansible/molecule#4142] is fixed):
    ```bash
-   molecule test --all
+   # from repo root
+   molecule -c .config/molecule/config.yml test --all
    ```
 
 7. AS NEEDED: Prep your system for ssh use.
@@ -172,10 +173,11 @@ well.
 
 <!-- Links -->
 [ansible-community/molecule-plugins#314]: https://github.com/ansible-community/molecule-plugins/pull/314
-[DRY]:     https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
-[pyenv]:   https://github.com/pyenv/pyenv
-[vagrant]: https://developer.hashicorp.com/vagrant/install
-[venv]:    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
+[DRY]:                   https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[ansible/molecule#4142]: https://github.com/ansible/molecule/issues/4142
+[pyenv]:                 https://github.com/pyenv/pyenv
+[vagrant]:               https://developer.hashicorp.com/vagrant/install
+[venv]:                  https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
 
 <!-- markdownlint-configure-file {
   ol-prefix: false

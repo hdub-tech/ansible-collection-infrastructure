@@ -81,4 +81,4 @@ jobs:
         run: |
           # parallel exit code = number of tests not executed... expecting 1
           # shellcheck disable=SC1083
-          parallel --filter='"{/}" ne "resources"' molecule test -s {/} ::: molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
+          parallel --filter='"{/}" ne "resources"' molecule -c $GITHUB_WORKSPACE/.config/molecule/config.yml test -s {/} ::: molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
