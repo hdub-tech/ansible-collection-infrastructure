@@ -86,8 +86,12 @@ jobs:
       - name: Run molecule playbook tests in parallel
         run: |
           # parallel exit code = number of tests not executed... expecting 1
-          # shellcheck disable=SC1083
-          parallel --filter='"{/}" ne "resources"' molecule -c $GITHUB_WORKSPACE/.config/molecule/config.yml test -s {/} ::: extensions/molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
+          # ANSIBLE_HOME with tmp dir solves galaxy install race condition
+          # https://github.com/ansible/ansible-compat/issues/199 (won't fix)
+          parallel --filter='"{/}" ne "resources"' \
+            'ANSIBLE_HOME=$(mktemp -d) molecule -c $GITHUB_WORKSPACE/.config/molecule/config.yml test -s {/}' \
+           ::: extensions/molecule/* \
+             || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
 
       - name: Run molecule role tests in parallel (scenarios sequentially)
         run: |
@@ -96,7 +100,9 @@ jobs:
             base=$(basename "$dir")
             [[ "$SKIP_ANSIBLE_ROLE_TESTS" =~ $base ]] && return 0
             cd "$dir" || exit 1
-            molecule -c "$GITHUB_WORKSPACE/.config/molecule/config.yml" test --all
+            # ANSIBLE_HOME with tmp dir solves galaxy install race condition
+            # https://github.com/ansible/ansible-compat/issues/199 (won't fix)
+            ANSIBLE_HOME=$(mktemp -d) molecule -c "$GITHUB_WORKSPACE/.config/molecule/config.yml" test --all
           }
           # export function/vars so parallel subshell can use
           export -f run_role
