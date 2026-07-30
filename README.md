@@ -24,7 +24,7 @@ A collection of things I commonly use with infrastructure.
 | --- | --- | --- |
 | [`hdub_tech.infrastructure.configure_apache2.yml`] | Uses [hdub_tech.infrastructure.apache2_configure] role to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
 | [`hdub_tech.infrastructure.configure_swap.yml`] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
-| [`hdub_tech.infrastructure.install-virtualization-tools.yml`] | Uses [hdub_tech.infrastructure.vagrant] role to install vagrant. GH-17 will add virtualbox. | Refer to [`vagrant` role README] |
+| [`hdub_tech.infrastructure.install-virtualization-tools.yml`] | Uses [hdub_tech.infrastructure.vagrant] and [hdub_tech.infrastructure.virtualbox] roles to install virtualization tools | Refer to [`vagrant` role README] and [`virtualbox` role README] |
 
 ### Roles
 

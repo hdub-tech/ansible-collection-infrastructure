@@ -7,7 +7,7 @@
   [ansible/molecule#4142]
 - Adds `vagrant` role (Debian only)
 - Adds `virtualbox` role (Debian only)
-- Adds `vagrant` play to `install-virtualization-tools.yml`
+- Adds `vagrant` and `virtualbox` play to `install-virtualization-tools.yml`
 
 ## 1.1.0
 

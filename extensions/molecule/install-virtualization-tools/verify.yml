@@ -2,10 +2,20 @@
 - name: Verify install-virtualization-tools.yml playbook
   hosts: linux
   gather_facts: false
+  vars:
+    verify_tools:
+      - vagrant
+      - virtualbox
+  pre_tasks:
+    - name: Load role command name vars for {{ item }}
+      ansible.builtin.include_vars:
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/{{ item }}/vars/main.yml"
+      loop: "{{ verify_tools }}"
   tasks:
-    - name: Check vagrant is installed
-      ansible.builtin.command: which vagrant  # noqa no-changed-when
+    - name: Check installation of {{ item }}
+      ansible.builtin.command: "which {{ vars[item + '_command'] }}"  # noqa no-changed-when
       check_mode: false
       changed_when: false
-      register: vagrant_which
-      failed_when: vagrant_which.rc == 1
+      register: which_result
+      failed_when: which_result.rc == 1
+      loop: "{{ verify_tools }}"
