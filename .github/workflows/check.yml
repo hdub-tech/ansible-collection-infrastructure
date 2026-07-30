@@ -58,8 +58,7 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          # TODO GH-17: replace virtualbox apt install with hdub_tech.infrastructure.virtualbox role
-          sudo apt update && sudo apt install virtualbox parallel
+          sudo apt update && sudo apt install parallel
           cd "$GITHUB_WORKSPACE" || exit 1
           pip install -r python-requirements.txt
           ansible-galaxy install -r ansible-requirements.yml
@@ -68,7 +67,7 @@ jobs:
           ln -sfT "$GITHUB_WORKSPACE" collections/ansible_collections/hdub_tech/infrastructure
           ansible-playbook -i localhost,linux -c local \
             "$GITHUB_WORKSPACE"/playbooks/install-virtualization-tools.yml \
-            --tags vagrant
+            --tags vagrant,virtualbox
 
       - name: Add the vagrant boxes to prevent race conditions during parallel molecule tests
         run: |
