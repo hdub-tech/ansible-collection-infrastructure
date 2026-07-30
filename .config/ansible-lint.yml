@@ -7,6 +7,6 @@ exclude_paths:
   - .github/workflows
   - .markdownlint*
   - collections/ansible_collections
-  - molecule/resources/playbooks/prepare_default.yml
-  - molecule/configure_swap/prepare.yml
+  - extensions/molecule/resources/playbooks/prepare_default.yml
+  - extensions/molecule/configure_swap/prepare.yml
   - roles/geerlingguy.swap

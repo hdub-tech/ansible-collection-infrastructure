@@ -18,7 +18,7 @@ scenario:
 provisioner:
   name: ansible
   env:
-    ANSIBLE_CONFIG: ../../ansible.cfg  # Relative to molecule playbook?
+    ANSIBLE_CONFIG: ${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg
   inventory:
     group_vars:
       linux:
