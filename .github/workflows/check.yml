@@ -66,7 +66,7 @@ jobs:
           mkdir -p collections/ansible_collections/hdub_tech
           ln -sfT "$GITHUB_WORKSPACE" collections/ansible_collections/hdub_tech/infrastructure
           ansible-playbook -i localhost,linux -c local \
-            "$GITHUB_WORKSPACE"/playbooks/install-virtualization-tools.yml \
+            "$GITHUB_WORKSPACE"/playbooks/install_virtualization_tools.yml \
             --tags vagrant,virtualbox
 
       - name: Add the vagrant boxes to prevent race conditions during parallel molecule tests

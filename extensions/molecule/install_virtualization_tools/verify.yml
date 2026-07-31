@@ -1,5 +1,5 @@
 ---
-- name: Verify install-virtualization-tools.yml playbook
+- name: Verify install_virtualization_tools.yml playbook
   hosts: linux
   gather_facts: false
   vars:

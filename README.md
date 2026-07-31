@@ -24,7 +24,7 @@ A collection of things I commonly use with infrastructure.
 | --- | --- | --- |
 | [`hdub_tech.infrastructure.configure_apache2.yml`] | Uses [hdub_tech.infrastructure.apache2_configure] role to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
 | [`hdub_tech.infrastructure.configure_swap.yml`] | Uses [geerlingguy.swap role] to enable or disable swap on a linux host | Refer to [geerlingguy.swap#role-variables] |
-| [`hdub_tech.infrastructure.install-virtualization-tools.yml`] | Uses [hdub_tech.infrastructure.vagrant] and [hdub_tech.infrastructure.virtualbox] roles to install virtualization tools | Refer to [`vagrant` role README] and [`virtualbox` role README] |
+| [`hdub_tech.infrastructure.install_virtualization_tools.yml`] | Uses [hdub_tech.infrastructure.vagrant] and [hdub_tech.infrastructure.virtualbox] roles to install virtualization tools | Refer to [`vagrant` role README] and [`virtualbox` role README] |
 
 ### Roles
 
@@ -111,7 +111,7 @@ A collection of things I commonly use with infrastructure.
 [hdub_tech.infrastructure.apache2_configure]:                  ./roles/apache2_configure/README.md
 [`hdub_tech.infrastructure.configure_apache2.yml`]:            ./playbooks/configure_apache2.yml
 [`hdub_tech.infrastructure.configure_swap.yml`]:               ./playbooks/configure_swap.yml
-[`hdub_tech.infrastructure.install-virtualization-tools.yml`]: ./playbooks/install-virtualization-tools.yml
+[`hdub_tech.infrastructure.install_virtualization_tools.yml`]: ./playbooks/install_virtualization_tools.yml
 [hdub_tech.infrastructure.vagrant]:                            ./roles/vagrant/README.md
 [hdub_tech.infrastructure.virtualbox]:                         ./roles/virtualbox/README.md
 [`vagrant` role README]:                                       ./roles/vagrant/README.md#role-variables
