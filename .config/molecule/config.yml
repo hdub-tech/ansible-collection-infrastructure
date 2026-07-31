@@ -19,7 +19,6 @@ scenario:
     - destroy
   destroy_sequence:
     - destroy
-provisioner:
-  name: ansible
+ansible:
   env:
     ANSIBLE_CONFIG: ${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg

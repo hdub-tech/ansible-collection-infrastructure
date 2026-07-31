@@ -1,6 +1,7 @@
 ---
-provisioner:
-  name: ansible
+ansible:
+  env:
+    ANSIBLE_CONFIG: ../../../../ansible.cfg
 platforms:
   - name: ubuntu-2604-vagrant
     box: bento/ubuntu-26.04
