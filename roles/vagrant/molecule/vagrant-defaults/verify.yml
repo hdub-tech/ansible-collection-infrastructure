@@ -6,10 +6,10 @@
     - name: Load per OS variables (avoid post-INJECT_FACTS_AS_VARS migration warning)
       tags: [vagrant, variables]
       ansible.builtin.include_vars:
-        file: "{{ vars_file }}"
+        file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/vars/{{ vars_file }}"
       loop:
-        - "../../vars/main.yml"
-        - "../../vars/{{ ansible_facts['os_family'] }}.yml"
+        - main.yml
+        - "{{ ansible_facts['os_family'] }}.yml"
       loop_control:
         loop_var: vars_file
   tasks:

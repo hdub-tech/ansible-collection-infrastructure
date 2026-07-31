@@ -1,0 +1,2 @@
+{# TODO arch should be set with dpkg --get-architecture #}
+deb [arch=amd64 signed-by={{ vagrant_signing_key }}] {{ vagrant_repository_url }} {{ ansible_facts['distribution_release'] }} main

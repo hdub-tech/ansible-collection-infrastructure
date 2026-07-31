@@ -7,14 +7,28 @@
     dest: "{{ vagrant_public_key_local }}"
     mode: "0600"
 
-- name: Set-up vagrant repo with key
+- name: Dearmor Vagrant signing key
+  tags: [vagrant, signing_key]
+  become: true
+  ansible.builtin.command:
+    creates: "{{ vagrant_signing_key }}"
+    argv:
+      - gpg
+      - --yes
+      - --output
+      - "{{ vagrant_signing_key }}"
+      - --dearmor
+      - "{{ vagrant_public_key_local }}"
+
+- name: Write Vagrant apt sources
   tags: [vagrant, apt_repo]
   become: true
-  ansible.builtin.shell:
-    creates: "{{ vagrant_sources_list }}"
-    cmd: |
-      gpg --yes --output "{{ vagrant_signing_key }}" --dearmor "{{ vagrant_public_key_local }}"
-      echo "{{ vagrant_sources_content }}" > "{{ vagrant_sources_list }}"
+  ansible.builtin.template:
+    src: hashicorp.list.j2
+    dest: "{{ vagrant_sources_list }}"
+    mode: "0644"
+    owner: root
+    group: root
 
 - name: Install packages
   tags: [vagrant, apt_install]
