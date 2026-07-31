@@ -7,12 +7,12 @@
       - vagrant
       - virtualbox
   pre_tasks:
-    - name: Load role command name vars for {{ item }}
+    - name: Load role command name vars for virtualization tools
       ansible.builtin.include_vars:
         file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/roles/{{ item }}/vars/main.yml"
       loop: "{{ verify_tools }}"
   tasks:
-    - name: Check installation of {{ item }}
+    - name: Check installation of virtualization tools
       ansible.builtin.command: "which {{ vars[item + '_command'] }}"  # noqa no-changed-when
       check_mode: false
       changed_when: false
