@@ -1,0 +1,2 @@
+{# TODO arch should be detected not hardcoded #}
+deb [arch=amd64 signed-by={{ virtualbox_signing_key }}] {{ virtualbox_repository_url }} {{ ansible_facts['distribution_release'] }} contrib

@@ -7,14 +7,28 @@
     dest: "{{ virtualbox_public_key_local }}"
     mode: "0600"
 
-- name: Set-up virtualbox repo with key
+- name: Dearmor VirtualBox signing key
+  tags: [virtualbox, signing_key]
+  become: true
+  ansible.builtin.command:
+    creates: "{{ virtualbox_signing_key }}"
+    argv:
+      - gpg
+      - --yes
+      - --output
+      - "{{ virtualbox_signing_key }}"
+      - --dearmor
+      - "{{ virtualbox_public_key_local }}"
+
+- name: Write VirtualBox apt sources
   tags: [virtualbox, apt_repo]
   become: true
-  ansible.builtin.shell:
-    creates: "{{ virtualbox_sources_list }}"
-    cmd: |
-      gpg --yes --output "{{ virtualbox_signing_key }}" --dearmor "{{ virtualbox_public_key_local }}"
-      echo "{{ virtualbox_sources_content }}" > "{{ virtualbox_sources_list }}"
+  ansible.builtin.template:
+    src: virtualbox.list.j2
+    dest: "{{ virtualbox_sources_list }}"
+    mode: "0644"
+    owner: root
+    group: root
 
 - name: Install dependencies
   tags: [virtualbox, dependencies]
