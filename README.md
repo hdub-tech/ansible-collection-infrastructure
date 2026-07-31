@@ -32,7 +32,7 @@ A collection of things I commonly use with infrastructure.
 | --- | --- | --- |
 | [hdub_tech.infrastructure.apache2_configure] | Uses [`ansible.builtin.lineinfile` module] to modify apache configs and restart the service | Refer to [`apache2_configure` role README] |
 | [hdub_tech.infrastructure.vagrant] | Installs [hashicorp apt repo] and [vagrant] | Refer to [`vagrant` role README] |
-| [hdub_tech.infrastructure.virtualbox] | Installs [VirtualBox] including [Guest Additions ISO] | Refer to [`virtualbox` role README] |
+| [hdub_tech.infrastructure.virtualbox] | Installs [VirtualBox] from their apt repo, including [Guest Additions ISO] | Refer to [`virtualbox` role README] |
 
 ## Getting Started
 

@@ -99,10 +99,20 @@
 
 6. Confirm you can execute Molecule tests. (`-c FILE` required until
    [ansible/molecule#4142] is fixed):
-   ```bash
-   # from repo root
-   molecule -c .config/molecule/config.yml test --all
-   ```
+
+   a. Playbook tests
+
+      ```bash
+      # from repo root
+      molecule -c .config/molecule/config.yml test --all
+      ```
+
+   b. Role tests
+
+      ```bash
+      # from <rolename> directory
+      molecule -c .../../config/molecule/config.yml test --all
+      ```
 
 7. Confirm project lints clean with [ansible-lint] and
    [markdownlint-cli2]:

@@ -3,10 +3,8 @@
 ## {{ NEXT_RELEASE }}
 
 - Updates docs with tip for using `import_playbook`
-- Adds manual use of `-c FILE` to molecule commands due to
-  [ansible/molecule#4142]
-- Adds `vagrant` role (Debian only)
-- Adds `virtualbox` role (Debian only)
+- Adds `vagrant` role (Debian only, installs only)
+- Adds `virtualbox` role (Debian only, installs only)
 - Adds `vagrant` and `virtualbox` play to `install_virtualization_tools.yml`
 
 ## 1.1.0
@@ -41,4 +39,3 @@ Initial release.
 </details>
 
 <!-- Links -->
-[ansible/molecule#4142]: https://github.com/ansible/molecule/issues/4142
