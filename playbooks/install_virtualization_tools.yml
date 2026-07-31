@@ -1,0 +1,12 @@
+---
+- name: Install vagrant
+  hosts: linux
+  tags: [vagrant]
+  roles:
+    - hdub_tech.infrastructure.vagrant
+
+- name: Install virtualbox
+  hosts: linux
+  tags: [virtualbox]
+  roles:
+    - hdub_tech.infrastructure.virtualbox

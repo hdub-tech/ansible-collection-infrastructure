@@ -1,0 +1,9 @@
+---
+virtualbox_public_key_url:   https://www.virtualbox.org/download/oracle_vbox_2016.asc
+virtualbox_public_key_local: "/tmp/{{ virtualbox_public_key_url | basename }}"
+virtualbox_sources_list:     /etc/apt/sources.list.d/virtualbox.list
+virtualbox_repository_url:   https://download.virtualbox.org/virtualbox/debian
+virtualbox_signing_key:      /usr/share/keyrings/oracle-virtualbox-2016.gpg
+virtualbox_packages:
+  - virtualbox-7.2
+virtualbox_guest_additions_path: /usr/share/virtualbox/VBoxGuestAdditions.iso

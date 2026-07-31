@@ -5,5 +5,5 @@
 .ansible
 
 # Ansible galaxy roles/collections
-collections/ansible_collections/ansible*
+collections/ansible_collections/*
 roles/geerlingguy.swap

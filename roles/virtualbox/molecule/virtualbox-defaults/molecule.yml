@@ -1,0 +1,12 @@
+---
+ansible:
+  env:
+    ANSIBLE_CONFIG: ${MOLECULE_SCENARIO_DIRECTORY}/../../../../ansible.cfg
+    ANSIBLE_COLLECTIONS_PATH: ${MOLECULE_SCENARIO_DIRECTORY}/../../../../collections
+platforms:
+  - name: ubuntu-2604-vagrant
+    box: bento/ubuntu-26.04
+    memory: 2048
+    groups:
+      - linux
+      - apt

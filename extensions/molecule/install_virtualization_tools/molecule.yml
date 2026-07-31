@@ -1,0 +1,11 @@
+---
+provisioner:
+  name: ansible
+  playbooks:
+    converge: ../../../playbooks/install_virtualization_tools.yml
+platforms:
+  - name: ubuntu-2604-vagrant
+    box: bento/ubuntu-26.04
+    memory: 2048
+    groups:
+      - linux

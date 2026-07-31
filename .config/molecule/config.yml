@@ -1,11 +1,24 @@
 ---
-provisioner:
-  name: ansible
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+scenario:
+  test_sequence:
+    # - dependency
+    # - cleanup
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    # - side_effect
+    - verify
+    # - cleanup
+    - destroy
+  destroy_sequence:
+    - destroy
+ansible:
   env:
-    ANSIBLE_CONFIG: ../../ansible.cfg  # Relative to molecule playbook?
-    ANSIBLE_ROLES_PATH: ../../roles  # Relative to molecule playbook?
-    ANSIBLE_COLLECTIONS_PATH: ../../collections  # Relative to molecule playbook?
-  inventory:
-    group_vars:
-      linux:
-        ansible_python_interpreter: /usr/bin/python3
+    ANSIBLE_CONFIG: ${MOLECULE_PROJECT_DIRECTORY}/ansible.cfg

@@ -13,7 +13,7 @@ env:
   ANSIBLE_FORCE_COLOR: '1'
   ANSIBLE_VERBOSITY: 1
   PY_COLORS: '1'
-  VAGRANT_VERSION: 2.4.3-1
+  SKIP_ANSIBLE_ROLE_TESTS: 'geerlingguy.swap apache2_configure'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,15 +26,13 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checks-out repository under $GITHUB_WORKSPACE
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install Python
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
-        with:
-          python-version-file: .python-version
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  #v7.0.0
 
       - name: Lint markdown files
-        uses: DavidAnson/markdownlint-cli2-action@05f32210e84442804257b2a6f20b273450ec8265  # 19.1.0
+        uses: DavidAnson/markdownlint-cli2-action@6bf21b07787794f89a243495939cd651942aeabe  #v24.1.0
 
       - name: Install project dependencies
         run: |
@@ -53,32 +51,59 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Checks-out repository under $GITHUB_WORKSPACE
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # 4.2.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Install Python
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55  # 5.5.0
-        with:
-          python-version-file: .python-version
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  #v7.0.0
 
       - name: Install project dependencies
         run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          # shellcheck disable=SC2086
-          sudo apt update && sudo apt install virtualbox vagrant=$VAGRANT_VERSION parallel
+          sudo apt update && sudo apt install parallel
           cd "$GITHUB_WORKSPACE" || exit 1
           pip install -r python-requirements.txt
           ansible-galaxy install -r ansible-requirements.yml
+          # simulate collection install for ansible-playbook run
+          mkdir -p collections/ansible_collections/hdub_tech
+          ln -sfT "$GITHUB_WORKSPACE" collections/ansible_collections/hdub_tech/infrastructure
+          ansible-playbook -i localhost,linux -c local \
+            "$GITHUB_WORKSPACE"/playbooks/install_virtualization_tools.yml \
+            --tags vagrant,virtualbox
 
       - name: Add the vagrant boxes to prevent race conditions during parallel molecule tests
         run: |
           echo "Sockets: $( parallel --number-of-sockets )"
           echo "Cores: $( parallel --number-of-cores )"
           echo "Threads: $( parallel --number-of-threads )"
-          parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04
+          parallel vagrant box add --provider virtualbox --no-tty {} ::: bento/ubuntu-22.04 bento/ubuntu-26.04
+
+      - name: Hack for GH-49 (missing fqcn in molecule_plugins/vagrant)
+        run: |
+          export MP_PATH=$( pip show molecule-plugins | grep Location | cut -d' ' -f2 )
+          sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' "${MP_PATH}"/molecule_plugins/vagrant/playbooks/*.yml
+          grep -C2 "community.vagrant" "${MP_PATH}"/molecule_plugins/vagrant/playbooks/*.yml
 
       - name: Run molecule playbook tests in parallel
         run: |
           # parallel exit code = number of tests not executed... expecting 1
-          # shellcheck disable=SC1083
-          parallel --filter='"{/}" ne "resources"' molecule test -s {/} ::: molecule/* || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
+          # ANSIBLE_HOME with tmp dir solves galaxy install race condition
+          # https://github.com/ansible/ansible-compat/issues/199 (won't fix)
+          parallel --filter='"{/}" ne "resources"' \
+            'ANSIBLE_HOME=$(mktemp -d) molecule -c $GITHUB_WORKSPACE/.config/molecule/config.yml test -s {/}' \
+           ::: extensions/molecule/* \
+             || (PARALLEL_RC=$? && [ "$PARALLEL_RC" -eq 1 ] || exit "$PARALLEL_RC")
+
+      - name: Run molecule role tests in parallel (scenarios sequentially)
+        run: |
+          run_role() {
+            local dir="$1" base
+            base=$(basename "$dir")
+            [[ " $SKIP_ANSIBLE_ROLE_TESTS " == *" $base "* ]] && return 0
+            cd "$dir" || exit 1
+            # ANSIBLE_HOME with tmp dir solves galaxy install race condition
+            # https://github.com/ansible/ansible-compat/issues/199 (won't fix)
+            ANSIBLE_HOME=$(mktemp -d) molecule -c "$GITHUB_WORKSPACE/.config/molecule/config.yml" test --all
+          }
+          # export function/vars so parallel subshell can use
+          export -f run_role
+          export SKIP_ANSIBLE_ROLE_TESTS GITHUB_WORKSPACE
+          parallel run_role ::: "$GITHUB_WORKSPACE"/roles/*/

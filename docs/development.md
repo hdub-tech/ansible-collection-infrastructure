@@ -79,13 +79,54 @@
    ansible-galaxy install -r ansible-requirements.yml
    ```
 
-6. Confirm you can execute Molecule tests:
+   a. Set up the local collection layout so `hdub_tech.infrastructure.*`
+      FQCNs resolve to your working copy (required for playbooks that
+      reference internal roles by FQCN):
+
+      ```bash
+      # from repo root
+      mkdir -p collections/ansible_collections/hdub_tech
+      ln -sfT "$(pwd)" collections/ansible_collections/hdub_tech/infrastructure
+      ```
+
+   b. TEMPORARY PATCH REQUIRED (until [ansible-community/molecule-plugins#314]
+      is merged):
+
+      ```bash
+      # Use fqcn for community.vagrant.vagrant in vagrant molecule_plugin
+      sed -i.bu 's/\([^\.]\)\(vagrant:\)/\1community.vagrant.\2/' ${VIRTUAL_ENV}/lib/python*/site-packages/molecule_plugins/vagrant/playbooks/*.yml
+      ```
+
+6. Confirm you can execute Molecule tests. (`-c FILE` required until
+   [ansible/molecule#4142] is fixed):
+
+   a. Playbook tests
+
+      ```bash
+      # from repo root
+      molecule -c .config/molecule/config.yml test --all
+      ```
+
+   b. Role tests
+
+      ```bash
+      # from <rolename> directory
+      molecule -c .../../config/molecule/config.yml test --all
+      ```
+
+7. Confirm project lints clean with [ansible-lint] and
+   [markdownlint-cli2]:
 
    ```bash
-   molecule test --all
+   # from repo root
+   ansible-lint
+   ```
+   ```bash
+   # from repo root
+   podman run --rm -v .:/workdir docker.io/davidanson/markdownlint-cli2:v0.22.1
    ```
 
-7. AS NEEDED: Prep your system for ssh use.
+8. AS NEEDED: Prep your system for ssh use.
 
     a. Copy template ssh config from password manager to your host.
     (_TODO Flesh out details_)
@@ -97,7 +138,7 @@
     ssh-add ~/.ssh/$USER_$DESC_infra
     ```
 
-8. Ensure `ansible-navigator` works against your localhost (_The following
+9. Ensure `ansible-navigator` works against your localhost (_The following
    commands will only gather information about the setup of your system - no
    changes will be made_).
 
@@ -163,10 +204,14 @@ well.
 </details>
 
 <!-- Links -->
-[DRY]:     https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
-[pyenv]:   https://github.com/pyenv/pyenv
-[vagrant]: https://developer.hashicorp.com/vagrant/install
-[venv]:    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
+[ansible-community/molecule-plugins#314]: https://github.com/ansible-community/molecule-plugins/pull/314
+[ansible-lint]:          https://ansible.readthedocs.io/projects/lint/
+[ansible/molecule#4142]: https://github.com/ansible/molecule/issues/4142
+[DRY]:                   https://en.wikipedia.org/wiki/Don%27t_repeat_yourself
+[markdownlint-cli2]:     https://github.com/DavidAnson/markdownlint-cli2
+[pyenv]:                 https://github.com/pyenv/pyenv
+[vagrant]:               https://developer.hashicorp.com/vagrant/install
+[venv]:                  https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#create-and-use-virtual-environments
 
 <!-- markdownlint-configure-file {
   ol-prefix: false

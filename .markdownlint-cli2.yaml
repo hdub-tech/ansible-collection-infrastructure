@@ -9,9 +9,3 @@ globs:
 ignores:
   - "**/*.swp"
   - "plugins/README.md"
-
-config:
-  MD013:  # line-length
-    code_blocks: false
-    tables: false
-  MD033: false  # no-inline-html

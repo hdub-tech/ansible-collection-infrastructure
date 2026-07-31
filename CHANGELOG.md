@@ -3,6 +3,9 @@
 ## {{ NEXT_RELEASE }}
 
 - Updates docs with tip for using `import_playbook`
+- Adds `vagrant` role (Debian only, installs only)
+- Adds `virtualbox` role (Debian only, installs only)
+- Adds `vagrant` and `virtualbox` play to `install_virtualization_tools.yml`
 
 ## 1.1.0
 
@@ -34,3 +37,5 @@ Initial release.
 - Adds usage and development documentation
 
 </details>
+
+<!-- Links -->
