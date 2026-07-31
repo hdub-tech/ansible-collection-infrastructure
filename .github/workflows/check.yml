@@ -97,7 +97,7 @@ jobs:
           run_role() {
             local dir="$1" base
             base=$(basename "$dir")
-            [[ "$SKIP_ANSIBLE_ROLE_TESTS" =~ $base ]] && return 0
+            [[ " $SKIP_ANSIBLE_ROLE_TESTS " == *" $base "* ]] && return 0
             cd "$dir" || exit 1
             # ANSIBLE_HOME with tmp dir solves galaxy install race condition
             # https://github.com/ansible/ansible-compat/issues/199 (won't fix)
